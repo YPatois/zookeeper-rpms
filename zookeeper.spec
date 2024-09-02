@@ -1,6 +1,12 @@
+%if %{?fedora}%{!?fedora:0} >= 31 || %{?rhel}%{!?rhel:0} >= 8
+%global use_python3 1
+%else
+%global use_python3 0
+%endif
+
 %define _noarch_libdir /usr/lib
-%define rel_ver 3.5.5
-%define pkg_ver 3
+%define rel_ver 3.8.4
+%define pkg_ver 1
 
 Summary: High-performance coordination service for distributed applications.
 Name: zookeeper
@@ -16,8 +22,14 @@ Source2: zoo.cfg
 Source3: log4j.properties
 Source4: zookeeper.sysconfig
 BuildRoot: %{_tmppath}/%{name}-%{rel_ver}-%{release}-root
-BuildRequires: python-devel,gcc,make,libtool,autoconf,cppunit-devel,maven,hostname,systemd
+BuildRequires: gcc,make,libtool,autoconf,cppunit-devel,maven,hostname,systemd
+%if %{use_python3}
+BuildRequires:	python3-devel
+%else
+BuildRequires:	python2-devel
+%endif
 Requires: java,nc,systemd
+
 AutoReqProv: no
 
 %description
@@ -93,6 +105,8 @@ exit 0
 %systemd_postun_with_restart %{name}.service
 
 %changelog
+* Mon Sep 02 2024 Yannick Patois <yannick.patois@iphc.cnrs.fr> - 3.8.4
+- Bump version to 3.8.4
 * Fri Oct 04 2019 Tigran Mkrtchyan <tigran.mkrtchyan@desy.de> - 3.5.5-3
 - fix loading of systemd environment file
 - introduce variable to control package version
