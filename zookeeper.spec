@@ -23,6 +23,11 @@ Source3: log4j.properties
 Source4: zookeeper.sysconfig
 BuildRoot: %{_tmppath}/%{name}-%{rel_ver}-%{release}-root
 BuildRequires: gcc,make,libtool,autoconf,cppunit-devel,maven,hostname,systemd
+
+%if %{?rhel}%{!?rhel:0} >= 9
+BuildRequires: java-11-openjdk-devel
+%endif
+
 %if %{use_python3}
 BuildRequires:	python3-devel
 %else
